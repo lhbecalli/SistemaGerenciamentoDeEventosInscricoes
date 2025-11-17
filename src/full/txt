@@ -1,0 +1,34 @@
+  // Criando um novo evento
+        Eventos evento = new Eventos();
+
+        // Pedir dados do evento ao usuário
+        System.out.print("Digite o local do evento: ");
+        String local = scanner.nextLine();
+
+        System.out.print("Digite o artista do evento: ");
+        String artista = scanner.nextLine();
+
+        System.out.print("Digite o horário do evento: ");
+        String horario = scanner.nextLine();
+
+        System.out.print("Digite o dia do evento: ");
+        String dia = scanner.nextLine();
+
+        System.out.print("Digite a capacidade da pista: ");
+        int capacidadePista = scanner.nextInt();
+
+        System.out.print("Digite a capacidade do camarote: ");
+        int capacidadeCamarote = scanner.nextInt();
+
+        // Cadastrar evento
+        // Vai definir o valor de cada variável no evento.
+        evento.cadastrarEvento(local, artista, horario, dia, capacidadePista, capacidadeCamarote);
+
+        // Mostrar dados do evento cadastrado
+        System.out.println("\nEvento cadastrado com sucesso!");
+        System.out.println("Local: " + evento.getLocal());
+        System.out.println("Artista: " + evento.getArtista());
+        System.out.println("Horário: " + evento.getHorario());
+        System.out.println("Dia: " + evento.getDia());
+        System.out.println("Capacidade Pista: " + evento.getCapacidadeTotalPista());
+        System.out.println("Capacidade Camarote: " + evento.getCapacidadeTotalCamarote());

@@ -1,5 +1,15 @@
 package full;
 
+
+/**
+ * Classe Inscricao
+
+ * Representa a inscrição de um participante em um evento
+ * Armazena informações como nome do participante, email, tipo de ingresso (Pista ou Camarote)
+ * e o ID do evento ao qual a inscrição está vinculada
+ * Possui construtor vazio e completo, além de métodos getters e setters para todos os atributos
+ */
+
 public class Inscricao {
     private String nomeParticipante; // Nome do participante inscrito
     private String email;            // Email do participante
@@ -37,7 +47,6 @@ public class Inscricao {
     public String getEmail() {
         return this.email;
     }
-
 
     // Define o tipo de ingresso
     public void setTipoIngresso(String tipoIngresso) {

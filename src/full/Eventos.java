@@ -1,5 +1,12 @@
 package full;
 
+
+/**Classe Eventos
+ *
+ * Representa um evento com informações como local, artista, horário, dia e capacidade de público
+ * Contém métodos para acessar e modificar seus atributos, além de um metodo estático para criar novos eventos
+ */
+
 public class Eventos {
     private String local;
     private String artista;
@@ -8,12 +15,10 @@ public class Eventos {
     private int capacidadeTotalCamarote;
     private int capacidadeTotalPista;
 
-    //Construtor Vazio
-    public Eventos(){
+    // Construtor vazio
+    public Eventos() { }
 
-    }
-
-    // Construtor Completo
+    // Construtor completo
     public Eventos(String local, String artista, String horario, String dia,
                    int capacidadeTotalCamarote, int capacidadeTotalPista) {
         this.local = local;
@@ -24,84 +29,63 @@ public class Eventos {
         this.capacidadeTotalPista = capacidadeTotalPista;
     }
 
-
-  // Getters e Setters
-    // Retorna o local do evento
-    public String getLocal() {
-        return this.local;
-    }
-    // Define o local do evento
+    // Define o local
     public void setLocal(String local) {
         this.local = local;
     }
-
-
-    // Retorna o artista
-    public String getArtista() {
-        return this.artista;
+    // Retorna o local
+    public String getLocal() {
+        return local;
     }
+
     // Define o artista
     public void setArtista(String artista) {
         this.artista = artista;
     }
-
-
-    // Retorna o horário
-    public String getHorario() {
-        return this.horario;
+    // Retorna o artista
+    public String getArtista() {
+        return artista;
     }
+
     // Define o horário
     public void setHorario(String horario) {
         this.horario = horario;
     }
-
-
-    // Retorna o dia
-    public String getDia() {
-        return this.dia;
+    // Retorna o horário
+    public String getHorario() {
+        return horario;
     }
+
     // Define o dia
     public void setDia(String dia) {
         this.dia = dia;
     }
-
-
-    // Retorna a capacidade total do camarote
-    public int getCapacidadeTotalCamarote() {
-        return this.capacidadeTotalCamarote;
+    // Retorna o dia
+    public String getDia() {
+        return dia;
     }
+
     // Define a capacidade do camarote
     public void setCapacidadeTotalCamarote(int capacidadeTotalCamarote) {
         this.capacidadeTotalCamarote = capacidadeTotalCamarote;
     }
-
-
-    // Retorna a capacidade total da pista
-    public int getCapacidadeTotalPista() {
-        return this.capacidadeTotalPista;
+    // Retorna a capacidade do camarote
+    public int getCapacidadeTotalCamarote() {
+        return capacidadeTotalCamarote;
     }
+
     // Define a capacidade da pista
     public void setCapacidadeTotalPista(int capacidadeTotalPista) {
         this.capacidadeTotalPista = capacidadeTotalPista;
     }
+    // Retorna a capacidade da pista
+    public int getCapacidadeTotalPista() {
+        return capacidadeTotalPista;
+    }
 
-
-    //Função de cadastrar o Evento
-    public void cadastrarEvento(
-            String local,
-            String artista,
-            String horario,
-            String dia,
-            int capacidadeTotalPista,
-            int capacidadeTotalCamarote
-    ) {
-        this.local = local;
-        this.artista = artista;
-        this.horario = horario;
-        this.dia = dia;
-        this.capacidadeTotalPista = capacidadeTotalPista;
-        this.capacidadeTotalCamarote = capacidadeTotalCamarote;
+    // Metodo para criar um novo evento
+    public static Eventos cadastrarEvento(String local, String artista, String horario, String dia,
+    int capacidadeTotalCamarote, int capacidadeTotalPista) {
+        return new Eventos(local, artista, horario, dia, capacidadeTotalCamarote, capacidadeTotalPista);
     }
 }
-
-

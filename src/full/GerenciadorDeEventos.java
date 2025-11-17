@@ -2,6 +2,15 @@ package full;
 
 import java.util.ArrayList;
 
+
+/**
+ * Classe GerenciadorDeEventos
+
+ * Responsável por gerenciar os eventos, clientes e inscrições do sistema
+ * Utiliza listas dinâmicas (ArrayList) para armazenar os objetos
+ * Contém métodos para adicionar, listar e buscar eventos, clientes e inscrições
+ */
+
 public class GerenciadorDeEventos {
 
     // Utilizamos ArrayList pq tem tamanho dinâmico, ja no caso de uso de vetores teria que passar o tamanho e nao daria certo

@@ -1,73 +1,51 @@
 package full;
 
-public class Cliente {
-    private String nome;      // Nome do cliente
-    private int idade;        // Idade do cliente
-    private String email;     // Email do cliente
-    private String telefone;  // Telefone de contato
-    private String cpf;       // CPF do cliente
+/**
+ * Classe Cliente
+
+ * Representa um cliente do sistema, herdando atributos básicos de Pessoa (nome, idade e email)
+ * e adicionando informações específicas como telefone e CPF
+
+ * Contém métodos para acessar e modificar seus atributos, além de um metodo estático para criar novos clientes
+ */
+
+
+
+
+// Herda atributos e métodos da classe Pessoa
+public class Cliente extends Pessoa {
+    private String telefone;
+    private String cpf;
 
     // Construtor vazio
-    public Cliente() {
-    }
+    public Cliente() { }
 
-    // Construtor completo
-    public Cliente(String nome, String email, String telefone, String cpf, int idade){
-        this.nome = nome;
-        this.idade = idade;
-        this.email = email;
+    public Cliente(String nome, int idade, String email, String telefone, String cpf) {
+        super(nome, idade, email); // inicializa atributos da superclasse Pessoa
         this.telefone = telefone;
         this.cpf = cpf;
     }
 
-    // Define o nome do cliente
-    public void setNome(String nome){
-        this.nome = nome;
-    }
-    // Retorna o nome do cliente
-    public String getNome(){
-        return this.nome;
-    }
-
-    // Define a idade do cliente
-    public void setIdade(int idade){
-        this.idade = idade;
-    }
-    // Retorna a idade do cliente
-    public int getIdade(){
-        return this.idade;
-    }
-
-    // Define o email do cliente
-    public void setEmail(String email){
-        this.email = email;
-    }
-    // Retorna o email do cliente
-    public String getEmail(){
-        return this.email;
-    }
-
-    // Define o telefone do cliente
-    public void setTelefone(String telefone){
+    // Define o telefone
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-    // Retorna o telefone do cliente
-    public String getTelefone(){
-        return this.telefone;
+    // Retorna o telefone
+    public String getTelefone() {
+        return telefone;
     }
 
-    // Define o CPF do cliente
-    public void setCpf(String cpf){
+    // Define o CPF
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-    // Retorna o CPF do cliente
-    public String getCpf(){
-        return this.cpf;
+    // Retorna o CPF
+    public String getCpf() {
+        return cpf;
     }
 
-
-    // Método que registra um novo cliente
+    // Metodo para criar cliente
     public static Cliente cadastrarCliente(String nome, int idade, String email, String telefone, String cpf) {
-        return new Cliente(nome, email, telefone, cpf, idade);
+        return new Cliente(nome, idade, email, telefone, cpf);
     }
 }

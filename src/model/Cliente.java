@@ -52,7 +52,7 @@ public class Cliente extends Pessoa implements Serializable {
         return cpf;
     }
 
-    // Aqui usamos o Metodo Factory (Fábrica)
+    // Aqui usamos o "Metodo Fábrica"
     // Facilita a criação de um Cliente sem precisar chamar 'new Cliente(...)' diretamente na Main.
     public static Cliente cadastrarCliente(String nome, int idade, String email, String telefone, String cpf) {
         return new Cliente(nome, idade, email, telefone, cpf);

@@ -19,7 +19,9 @@ public class Pessoa implements Serializable {
     protected String email;
 
     // Construtor vazio (Necessário para algumas bibliotecas e boas práticas)
-    public Pessoa() { }
+    public Pessoa() {
+
+    }
 
     // Construtor completo para inicializar os dados
     public Pessoa(String nome, int idade, String email) {

@@ -9,10 +9,11 @@ import java.util.ArrayList;
 
 /**
  * Classe GerenciadorDeEventos
- * Responsável por gerenciar os eventos, clientes e inscrições do sistema.
- * * Funciona como o "Cérebro" ou "Banco de Dados em Memória" do sistema.
- * Implementa Serializable para permitir salvar o estado completo em arquivo.
+ * Responsável por gerenciar os eventos, clientes e inscrições do sistema
+ * * Funciona como o "Cérebro" ou "Banco de Dados em Memória" do nosso sistema
+ * Implementa Serializable para permitir salvar o estado completo em arquivo
  */
+
 public class GerenciadorDeEventos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,20 +44,24 @@ public class GerenciadorDeEventos implements Serializable {
     // Busca por nome/artista
     // Percorre a lista comparando o nome do artista (ignorando maiúsculas/minúsculas)
     public Eventos buscarEventoPorArtista(String artista) {
+
         for (Eventos e : listaEventos) {
             if (e.getArtista().equalsIgnoreCase(artista)) {
                 return e;
             }
         }
+
         return null; // Retorna null se não encontrar
     }
 
     // Busca por ID (Essencial para vincular a Inscrição ao Evento correto)
     public Eventos buscarEventoPorId(int id) {
+
         for (Eventos e : listaEventos) {
             if (e.getId() == id) {
                 return e;
             }
+
         }
         return null;
     }
@@ -73,11 +78,13 @@ public class GerenciadorDeEventos implements Serializable {
 
     // Busca Cliente por CPF (Usado para validar se o cliente já existe antes de cadastrar)
     public Cliente buscarClientePorCpf(String cpf) {
+
         for (Cliente c : listaClientes) {
             if (c.getCpf().equals(cpf)) {
                 return c;
             }
         }
+
         return null;
     }
 
@@ -91,21 +98,24 @@ public class GerenciadorDeEventos implements Serializable {
         return listaInscricoes;
     }
 
-    // --- NOVO MÉTODO: Controle de Estoque (Regra de Negócio) ---
-    // Este método percorre a lista de inscrições e conta quantos ingressos já foram vendidos
-    // para um determinado evento e um determinado setor (Pista ou Camarote).
-    // Isso serve para validar a lotação antes de vender um novo ingresso.
+
+    // --- METODO do Controle de Estoque (Regra de Negócio) ---
+
+    //Percorre a lista de inscrições e conta quantos ingressos já foram vendidos
+    // para um determinado evento e um determinado setor (Pista ou Camarote)
+    // Serve para validar a lotação antes de vender um novo ingresso
     public int contarIngressosVendidos(int idEvento, String tipoIngresso) {
         int quantidade = 0;
-        
+
         for (Inscricao i : listaInscricoes) {
             // Verifica se a inscrição pertence ao evento solicitado (pelo ID)
             // E se é do mesmo tipo de ingresso (Pista ou Camarote)
             if (i.getIdEvento() == idEvento && i.getTipoIngresso().equalsIgnoreCase(tipoIngresso)) {
-                quantidade++; // Incrementa o contador
+                quantidade++; // Aciona o contador
             }
         }
-        
+
         return quantidade; // Retorna o total vendido até agora
     }
+
 }

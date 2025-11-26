@@ -4,21 +4,22 @@ import java.io.Serializable;
 
 /**
  * Classe Pessoa
- * * É uma Superclasse (Mãe) que representa uma pessoa genérica.
+ * * É uma Superclasse que representa uma pessoa genérica.
  * Implementa Serializable para que seus dados possam ser gravados em arquivo.
  */
+
 public class Pessoa implements Serializable {
 
-    // Identificador de versão para a serialização
+    // Controle de versão para a serialização
     private static final long serialVersionUID = 1L;
 
-    // Atributos protected permitem que as classes filhas (como Cliente)
-    // acessem essas variáveis diretamente se necessário.
+    // Os atributos PROTECTED permitem que as classes filhas (Cliente)
+    // acessem essas variáveis diretamente se for necessário
     protected String nome;
     protected int idade;
     protected String email;
 
-    // Construtor vazio (Necessário para algumas bibliotecas e boas práticas)
+    // Construtor vazio )
     public Pessoa() {
 
     }
@@ -30,7 +31,7 @@ public class Pessoa implements Serializable {
         this.email = email;
     }
 
-    // --- Getters e Setters (Encapsulamento) ---
+    // --- Getters e Setters  ---
 
     public String getNome() {
         return nome;
@@ -60,23 +61,25 @@ public class Pessoa implements Serializable {
         return "Nome: " + nome + " | Email: " + email;
     }
 
-    // ---  equals  ---
+    // --- Metodo Equals  ---
     // Compara se duas Pessoas são iguais baseando-se no EMAIL.
     @Override
     public boolean equals(Object obj) {
+
         // Se for o mesmo objeto na memória, retorna true
         if (this == obj) return true;
 
         // Se o objeto for nulo ou de outra classe, retorna false
         if (obj == null || getClass() != obj.getClass()) return false;
 
-        // Converte o objeto genérico para Pessoa
+        // Converte o objeto generico para Pessoa
         Pessoa outraPessoa = (Pessoa) obj;
 
         // Compara os emails (tratando caso o email seja nulo)
         if (this.email == null) {
             return outraPessoa.email == null;
-        } else {
+        }
+        else {
             // Retorna true se os emails forem idênticos
             return this.email.equals(outraPessoa.email);
         }

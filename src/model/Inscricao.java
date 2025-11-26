@@ -13,19 +13,20 @@ import java.util.UUID; // Import necessário para gerar códigos aleatórios
  *
  * Implementa Serializable para permitir salvar os dados em arquivo.
  */
+
 public class Inscricao implements Serializable {
 
     // Controle de versão para a serialização
     private static final long serialVersionUID = 1L;
 
     private String nomeParticipante; // Nome do participante
-    private String email;            // Email do participante (Chave lógica para identificar a pessoa)
+    private String email;            // Email do participante = (Chave lógica para identificar a pessoa)
     private String tipoIngresso;     // "Pista" ou "Camarote"
-    private int idEvento;            // ID do evento (Chave estrangeira para vincular ao evento correto)
-    
-    // NOVO ATRIBUTO: Código único do ingresso (Ex: "A1B2-C3D4")
+    private int idEvento;            // ID do evento = (Chave para vincular ao evento correto)
+
+    // Código único do ingresso (ex: A1B2-C3D4)
     // Permite que a mesma pessoa compre mais de um ingresso
-    private String codigoIngresso; 
+    private String codigoIngresso;
 
     // Construtor Vazio
     public Inscricao() { }
@@ -36,10 +37,10 @@ public class Inscricao implements Serializable {
         this.email = email;
         this.tipoIngresso = tipoIngresso;
         this.idEvento = idEvento;
-        
-        // GERAÇÃO AUTOMÁTICA DO CÓDIGO ÚNICO
+
+        // GERAÇÃP AUTOMATICA DO CÓDIGO ÚNICO
         // Pega um identificador aleatório (UUID) e corta os primeiros 6 caracteres em maiúsculo
-        // Isso garante que cada objeto Inscrição seja único, mesmo se for a mesma pessoa no mesmo evento.
+        // isso garante que cada objeto Inscrição seja único, mesmo se for a mesma pessoa no mesmo evento.
         this.codigoIngresso = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
     }
 
@@ -49,7 +50,7 @@ public class Inscricao implements Serializable {
     public String getCodigoIngresso() {
         return codigoIngresso;
     }
-    // Não criamos setCodigoIngresso pois ele é gerado automaticamente e não deve mudar
+    // * Não criamos setCodigoIngresso pois ele é gerado automaticamente e não deve mudar
 
     // Define o nome do participante
     public void setNomeParticipante(String nomeParticipante) {
@@ -97,25 +98,27 @@ public class Inscricao implements Serializable {
                 "Evento ID: " + idEvento + " | Tipo: " + tipoIngresso + "\n";
     }
 
-    // --- EQUALS ATUALIZADO ---
-    // Lógica de Negócio Revisada: Agora dois ingressos só são considerados iguais se tiverem 
+    // --- Metodo Equals ---
+    // Dois ingressos só são considerados IGUAIS se tiverem
     // EXATAMENTE O MESMO CÓDIGO ÚNICO.
-    // Isso permite que a mesma pessoa (mesmo email) compre vários ingressos diferentes para o mesmo evento.
+    // Isso permite que a mesma pessoa (mesmo email) compre vários ingressos diferentes para o mesmo evento
     @Override
     public boolean equals(Object obj) {
-        // 1. Verifica memória
+
+        // Verifica memória
         if (this == obj) return true;
-        // 2. Verifica nulo ou classe diferente
+
+        // Verifica nulo ou classe diferente
         if (obj == null || getClass() != obj.getClass()) return false;
-        
-        // 3. Conversão (Casting)
+
+        // Conversão (Casting)
         Inscricao outra = (Inscricao) obj;
-        
-        // 4. Comparação: Verifica se os códigos únicos batem
+
+        // Comparação: Verifica se os códigos únicos batem
         return Objects.equals(this.codigoIngresso, outra.codigoIngresso);
     }
 
-    // Boa prática: implementar hashCode junto com equals
+    //Como boa prática implementamos o hashCode junto com equals
     @Override
     public int hashCode() {
         return Objects.hash(codigoIngresso);

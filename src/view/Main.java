@@ -12,6 +12,7 @@ import java.util.Scanner;
  * Classe Main (Interface com o Usuário)
  * Responsável por exibir o menu e capturar os dados do teclado com validações
  */
+
 public class Main {
 
     // Scanner global para ler o teclado
@@ -22,11 +23,12 @@ public class Main {
     private static PersistenciaArquivo persistencia;
 
     public static void main(String[] args) {
+
         // Inicializa a persistência
         persistencia = new PersistenciaArquivo();
 
         // Carrega os dados salvos anteriormente
-        System.out.println("Iniciando sistema...");
+        System.out.println("Sistema inicializado");
         gerenciador = persistencia.carregarDados();
 
         int opcao = -1;
@@ -37,7 +39,7 @@ public class Main {
             // Lê a opção tentando evitar erros de digitação
             opcao = lerInteiro("Digite sua opção: ");
 
-            // Consumir a quebra de linha pendente do scanner
+            // Consome a quebra de linha pendente do scanner
             scanner.nextLine();
 
             switch (opcao) {
@@ -60,7 +62,8 @@ public class Main {
                     listarInscricoes();
                     break;
                 case 0:
-                    System.out.println("Salvando dados e saindo...");
+                    System.out.println("Seus dados foram salvos com SUCESSO!");
+                    System.out.println("> O programa foi ENCERRADO.");
                     persistencia.salvarDados(gerenciador);
                     break;
                 default:
@@ -95,10 +98,10 @@ public class Main {
     private static void cadastrarEvento() {
         System.out.println("\n--- Novo Evento ---");
 
-        // Validação: Aceita letras e números, bloqueia símbolos estranhos
+        // Nesta validação: Aceita letras e números e bloqueia símbolos estranhos
         String artista = lerTextoPadrao("Nome do Artista/Evento: ");
 
-        // O Local aceita letras e números, mas não vai aceitar APENAS números
+        // O Local aceita letras e números, mas não vai aceitar APENAS numeros
         String local = lerLocal("Local: ");
 
         // Validações de data e hora
@@ -131,7 +134,7 @@ public class Main {
         String email = lerEmail("Email: ");
         String telefone = lerTelefone("Telefone (DDD + Numero): ");
 
-        // Garante que a idade seja lógica (>0)
+        // Garante que a idade seja lógica ("maior que 0")
         int idade = lerInteiroPositivo("Idade: ");
 
         Cliente novoCliente = Cliente.cadastrarCliente(nome, idade, email, telefone, cpf);
@@ -161,7 +164,7 @@ public class Main {
         } catch (java.util.InputMismatchException e) {
             // Se digitar letra no ID, o catch pega, mas a validação abaixo resolve
         }
-        scanner.nextLine(); // Consumir quebra de linha
+        scanner.nextLine(); // Consome quebra de linha
 
         Eventos evento = gerenciador.buscarEventoPorId(idEvento);
 
@@ -171,19 +174,26 @@ public class Main {
         }
         System.out.println(">> Evento selecionado: " + evento.getArtista());
 
-        // 3. Define tipo com validação estrita (Só aceita Pista ou Camarote)
+        // 3. Define tipo com validação (Só aceita Pista ou Camarote)
         String tipo = lerTipoIngresso("Tipo de Ingresso (Pista/Camarote): ");
 
         // --- VALIDAÇÃO DE ESTOQUE (LOTAÇÃO) ---
         int vendidos = gerenciador.contarIngressosVendidos(evento.getId(), tipo);
-        int capacidadeTotal = tipo.equalsIgnoreCase("Pista") ? evento.getCapacidadeTotalPista() : evento.getCapacidadeTotalCamarote();
+        int capacidadeTotal;
+
+        if (tipo.equalsIgnoreCase("Pista")) {
+            capacidadeTotal = evento.getCapacidadeTotalPista();
+        } else {
+            capacidadeTotal = evento.getCapacidadeTotalCamarote();
+        }
+
+        /** > AQUI é onde ele contabiliza a quantidade de ingressos disponíveis  */
         int disponiveis = capacidadeTotal - vendidos;
+        System.out.println("Ingressos DISPONIVEIS para " + tipo.toUpperCase() + ": " + disponiveis);
 
-        System.out.println(">> Status: " + vendidos + " vendidos de " + capacidadeTotal + " totais.");
-        System.out.println(">> Ingressos disponíveis para " + tipo + ": " + disponiveis);
-
+        //Se os ingressos disponiveis for menor ou igual a 0, significa que esta indisponivel dai entra no If.
         if (disponiveis <= 0) {
-            System.out.println("❌ ERRO: Ingressos esgotados para o setor " + tipo + "!");
+            System.out.println("> ERRO: Ingressos ESGOTADOS para o SETOR " + tipo.toUpperCase() + "!");
             return; // Cancela a venda
         }
 
@@ -191,8 +201,8 @@ public class Main {
         Inscricao novaInscricao = new Inscricao(cliente.getNome(), cliente.getEmail(), tipo, evento.getId());
         gerenciador.adicionarInscricao(novaInscricao);
 
-        System.out.println("✅ Venda realizada com sucesso!");
-        System.out.println("🎫 CÓDIGO DO INGRESSO: " + novaInscricao.getCodigoIngresso());
+        System.out.println("    VENDA REALIZADA com SUCESSO!");
+        System.out.println("    CÓDIGO DO INGRESSO: " + novaInscricao.getCodigoIngresso());
     }
 
     private static void listarEventos() {
@@ -218,7 +228,7 @@ public class Main {
     }
 
     private static void listarInscricoes() {
-        System.out.println("\n--- Lista de Inscrições ---");
+        System.out.println("\n--- Lista de Ingressos Vendidos ---");
         if (gerenciador.listarInscricoes().isEmpty()) {
             System.out.println("Nenhuma inscrição realizada.");
         } else {
@@ -229,16 +239,16 @@ public class Main {
     }
 
 
-    // --- MÉTODOS DE VALIDAÇÃO (TRATAMENTO DE ERROS) ---
+    // --- MÉTODOS DE VALIDAÇÃO (tratamento de erros) ---
 
     // 1. Valida Texto Padrão (Eventos)
-    // Permite letras, números e pontuação básica, mas bloqueia caracteres especiais
+    // Permite letras, números e pontuação, mas bloqueia caracteres especiais
     private static String lerTextoPadrao(String mensagem) {
         while (true) {
             String entrada = lerTexto(mensagem);
 
             if (entrada.length() < 2) {
-                System.out.println(" Erro: O texto é muito curto!");
+                System.out.println(">> ERRO: O texto é muito curto!");
                 continue;
             }
 
@@ -246,18 +256,18 @@ public class Main {
             boolean valido = true;
             for (int i = 0; i < entrada.length(); i++) {
                 char c = entrada.charAt(i);
-                // Aceita: Letras, Dígitos, Espaço, Ponto, Vírgula, Hífen, Aspas simples
+                // Aceita Letras, Dígitos, Espaço, Ponto, Vírgula, Hífen, Aspas simples
                 if (!Character.isLetterOrDigit(c) && !Character.isSpaceChar(c) &&
                         c != '.' && c != ',' && c != '-' && c != '\'') {
                     valido = false;
-                    break; // Para o loop se achar erro
+                    break; // Fecha o loop se achar erro
                 }
             }
 
             if (valido) {
                 return entrada;
             }
-            System.out.println(" Erro: Use apenas letras, números e pontuação básica (sem símbolos como @#$%).");
+            System.out.println(">> ERRO: Use apenas letras, números e pontuação básica (sem símbolos como @#$%).");
         }
     }
 
@@ -267,11 +277,11 @@ public class Main {
             System.out.print(mensagem);
             String entrada = scanner.nextLine();
 
-            // O uso do .trim() no retorno serve para remover espaços extras no início/fim
+            // Nos usamos o .trim() no retorno para remover espaços extras no início/fim
             if (!entrada.trim().isEmpty()) {
                 return entrada.trim();
             }
-            System.out.println(" Erro: Este campo não pode ficar vazio!");
+            System.out.println(">> ERRO: Este campo não pode ficar vazio!");
         }
     }
 
@@ -292,7 +302,7 @@ public class Main {
             if (temLetra) {
                 return entrada;
             }
-            System.out.println(" Erro: O local não pode ser apenas números! Informe o nome do lugar.");
+            System.out.println(">> ERRO: O local não pode ser apenas números! Informe o nome do lugar.");
         }
     }
 
@@ -301,7 +311,7 @@ public class Main {
         while (true) {
             String entrada = lerTexto(mensagem);
             if (entrada.length() < 3) {
-                System.out.println(" Erro: Nome muito curto!");
+                System.out.println(">> ERRO: Nome muito curto!");
                 continue;
             }
 
@@ -318,7 +328,7 @@ public class Main {
             if (apenasLetras) {
                 return entrada;
             }
-            System.out.println("Erro: Nome de pessoa não pode conter números ou símbolos!");
+            System.out.println(">> ERRO: Nome de pessoa não pode conter números ou símbolos!");
         }
     }
 
@@ -329,7 +339,7 @@ public class Main {
                 System.out.print(mensagem);
                 return scanner.nextInt();
             } catch (java.util.InputMismatchException e) {
-                System.out.println(" Erro: Digite apenas números inteiros!");
+                System.out.println(">> ERRO: Digite apenas números inteiros!");
                 scanner.nextLine(); // Limpa o buffer
             }
         }
@@ -340,16 +350,16 @@ public class Main {
         while (true) {
             int valor = lerInteiro(mensagem);
             if (valor > 0) return valor;
-            System.out.println(" Erro: O valor deve ser maior que zero!");
+            System.out.println(">> ERRO: O valor deve ser maior que zero!");
         }
     }
 
-    // 6. Valida CPF (Somente 11 dígitos)
+    // 6. Valida CPF, (Somente 11 dígitos)
     private static String lerCPF(String mensagem) {
         while (true) {
             String entrada = lerTexto(mensagem);
 
-            // Remove tudo que não é número manualmente
+            // Aqui remove tudo que não é número manualmente
             StringBuilder apenasNumeros = new StringBuilder();
             for (int i = 0; i < entrada.length(); i++) {
                 char c = entrada.charAt(i);
@@ -361,7 +371,7 @@ public class Main {
             if (apenasNumeros.length() == 11) {
                 return apenasNumeros.toString();
             }
-            System.out.println(" Erro: CPF inválido! Deve conter exatamente 11 números.");
+            System.out.println(">> ERRO: CPF inválido! Deve conter exatamente 11 números.");
         }
     }
 
@@ -372,17 +382,17 @@ public class Main {
             if (entrada.contains("@") && entrada.contains(".")) {
                 return entrada;
             }
-            System.out.println("Erro: Email inválido!");
+            System.out.println(">> ERRO: Email inválido!");
         }
     }
 
-    // 8. Valida Data (DD/MM/AAAA) com Lógica Manual (Split e ParseInt)
+    // 8. Valida Data (00/00/0000) com a Lógica do (Split e ParseInt)
     private static String lerData(String mensagem) {
         while (true) {
             String entrada = lerTexto(mensagem);
 
             if (entrada.length() != 10) {
-                System.out.println(" Erro: Data inválida! Use o formato DD/MM/AAAA.");
+                System.out.println(">> ERRO: Data inválida! Use o formato DD/MM/AAAA.");
                 continue;
             }
 
@@ -390,7 +400,7 @@ public class Main {
                 String[] partes = entrada.split("/");
 
                 if (partes.length != 3) {
-                    System.out.println(" Erro: Use barras '/' para separar dia, mês e ano.");
+                    System.out.println(">> ERRO: Use barras '/' para separar dia, mês e ano.");
                     continue;
                 }
 
@@ -398,25 +408,25 @@ public class Main {
                 int mes = Integer.parseInt(partes[1]);
                 int ano = Integer.parseInt(partes[2]);
 
-                // Regras: Dia até 31, Mês até 12, Ano atual ou futuro
+                // Regras que definimos: Dia até 31, Mês até 12, ANO ATUAL ou FUTURO
                 if (dia >= 1 && dia <= 31 && mes >= 1 && mes <= 12 && ano >= 2025) {
                     return entrada;
                 }
-                System.out.println(" Erro: Data impossível (Dia > 31, Mês > 12 ou Ano antigo).");
+                System.out.println(">> ERRO: Data impossível (Dia > 31, Mês > 12 ou Ano antigo).");
 
             } catch (NumberFormatException e) {
-                System.out.println(" Erro: Data inválida! Use apenas números e barras.");
+                System.out.println(">> ERRO: Data inválida! Use apenas números e barras.");
             }
         }
     }
 
-    // 9. Valida Horário (HH:mm) com Lógica Manual (Split e ParseInt)
+    // 9. Valida Horário também com Lógica do Split e ParseInt
     private static String lerHorario(String mensagem) {
         while (true) {
             String entrada = lerTexto(mensagem);
 
             if (entrada.length() != 5) {
-                System.out.println(" Erro: Horário inválido! Use o formato HH:mm.");
+                System.out.println(">> ERRO: Horário inválido! Use o formato HH:mm.");
                 continue;
             }
 
@@ -424,7 +434,7 @@ public class Main {
                 String[] partes = entrada.split(":");
 
                 if (partes.length != 2) {
-                    System.out.println(" Erro: Use dois pontos ':' para separar hora e minuto.");
+                    System.out.println(">> ERRO: Use dois pontos ':' para separar hora e minuto.");
                     continue;
                 }
 
@@ -434,10 +444,10 @@ public class Main {
                 if (hora >= 0 && hora <= 23 && minuto >= 0 && minuto <= 59) {
                     return entrada;
                 }
-                System.out.println(" Erro: Hora (00-23) ou minuto (00-59) inválidos.");
+                System.out.println(">> ERRO: Hora (00-23) ou minuto (00-59) inválidos.");
 
             } catch (NumberFormatException e) {
-                System.out.println(" Erro: Digite apenas números no horário.");
+                System.out.println(">> ERRO: Digite apenas números no horário.");
             }
         }
     }
@@ -447,7 +457,7 @@ public class Main {
         while (true) {
             String entrada = lerTexto(mensagem);
 
-            // Remove tudo que não é número manualmente
+            // Aqui vai remover tudo que não é número manualmente
             StringBuilder apenasNumeros = new StringBuilder();
             for (int i = 0; i < entrada.length(); i++) {
                 char c = entrada.charAt(i);
@@ -459,7 +469,7 @@ public class Main {
             if (apenasNumeros.length() >= 10 && apenasNumeros.length() <= 11) {
                 return apenasNumeros.toString();
             }
-            System.out.println(" Erro: Telefone inválido! Digite DDD + Número.");
+            System.out.println(">> ERRO: Telefone inválido! Digite DDD + Número.");
         }
     }
 
@@ -470,7 +480,7 @@ public class Main {
             if (entrada.equalsIgnoreCase("Pista") || entrada.equalsIgnoreCase("Camarote")) {
                 return entrada.substring(0, 1).toUpperCase() + entrada.substring(1).toLowerCase();
             }
-            System.out.println(" Erro: Tipo inválido! Escolha entre 'Pista' ou 'Camarote'.");
+            System.out.println(">> ERRO: Tipo inválido! Escolha entre 'Pista' ou 'Camarote'.");
         }
     }
 }

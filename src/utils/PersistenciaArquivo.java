@@ -7,13 +7,15 @@ import java.io.*;
 /** Classe PersistenciaArquivo
  * Responsável exclusivamente para salvar e carregar os dados do HD
  */
+
 public class PersistenciaArquivo {
 
-    //Nome do arquivo onde os dados serão salvos na pasta do projeto.
+    //Nome do arquivo onde os dados serão salvos na pasta do projeto
     private String nomeArquivo = "dados_sistema.bin";
 
     //  --- Metodo para SALVAR --- //
     public void salvarDados(GerenciadorDeEventos gerenciador) {
+
         // O bloco try-catch vai servir para tratar erros de disco (HD cheio, sem permissão, etc)
         try {
             // Cria o fluxo de saída para um arquivo
@@ -57,7 +59,7 @@ public class PersistenciaArquivo {
 
         } catch (FileNotFoundException e) {
             // Se cair aqui, é porque é a primeira vez que rodamos o programa e o arquivo ainda não existe.
-            System.out.println(" Nenhum arquivo encontrado. Criando base de dados vazia.");
+            System.out.println("Criando base de dados vazia.");
             gerenciador = new GerenciadorDeEventos();
 
         } catch (IOException | ClassNotFoundException e) {

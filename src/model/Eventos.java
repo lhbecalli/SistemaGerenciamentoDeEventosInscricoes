@@ -3,12 +3,14 @@ package model;
 import java.io.Serializable;
 /**Classe Eventos
  *
- * Representa um evento com informações como local, artista, horário, dia e capacidade de público
- * Contém métodos para acessar e modificar seus atributos, além de um metodo estático para criar novos eventos
+ * Representa um evento com informações como o local, artista, horário, dia e capacidade de público
+ * Essa classe contém métodos para acessar e modificar seus atributos, além de um metodo estático
+ * que colocamos para criar novos eventos
  */
 
 public class Eventos implements Serializable {
 
+    // Controle de versão para a serialização
     private static final long serialVersionUID = 1L;
 
     // Atributos para controle do ID automático
@@ -30,7 +32,7 @@ public class Eventos implements Serializable {
     public Eventos(String local, String artista, String horario, String dia,
                    int capacidadeTotalCamarote, int capacidadeTotalPista) {
 
-        this.id = contador++; /* Aqui é onde vai gerar o ID único (1, 2, 3...) */
+        this.id = contador++; /* Aqui é onde vai gerar o ID único (1, 2, 3, etc) */
         this.local = local;
         this.artista = artista;
         this.horario = horario;
@@ -84,27 +86,27 @@ public class Eventos implements Serializable {
         return dia;
     }
 
-    // Define a capacidade do camarote
+    // Define a capacidade do CAMAROTE
     public void setCapacidadeTotalCamarote(int capacidadeTotalCamarote) {
         this.capacidadeTotalCamarote = capacidadeTotalCamarote;
     }
 
-    // Retorna a capacidade do camarote
+    // Retorna a capacidade do CAMAROTE
     public int getCapacidadeTotalCamarote() {
         return capacidadeTotalCamarote;
     }
 
-    // Define a capacidade da pista
+    // Define a capacidade da PISTA
     public void setCapacidadeTotalPista(int capacidadeTotalPista) {
         this.capacidadeTotalPista = capacidadeTotalPista;
     }
 
-    // Retorna a capacidade da pista
+    // Retorna a capacidade da PISTA
     public int getCapacidadeTotalPista() {
         return capacidadeTotalPista;
     }
 
-    // Metodo para criar um novo evento
+    // Metodo para criar um novo evento:
     public static Eventos cadastrarEvento(String local, String artista, String horario, String dia,
                                           int capacidadeTotalCamarote, int capacidadeTotalPista) {
         return new Eventos(local, artista, horario, dia, capacidadeTotalCamarote, capacidadeTotalPista);
@@ -114,36 +116,39 @@ public class Eventos implements Serializable {
     // O @Override avisa o compilador que estamos substituindo o comportamento padrão do Java
     @Override
     public String toString() {
-        // Retorna uma String formatada.
-        // Sem isso, se dermos um System.out.println(evento), sairia algo feio como "model.Eventos@2f92e0f4".
+        // Retorna uma String formatada
+        // Sem isso, se dermos um System.out.println(evento), sairia algo feio como "model.Eventos@asd123sa12a".
         // Com isso, saem os dados legíveis.
         return "=== Evento Nº " + id + " ===\n" +
                 "Artista: " + artista + "\n" +
                 "Local: " + local + " | Dia: " + dia + " | Horário: " + horario + "\n" +
-                "Capacidade Pista: " + capacidadeTotalPista + " | Camarote: " + capacidadeTotalCamarote + "\n";
+                "Capacidade TOTAL => Pista: " + capacidadeTotalPista + " | Camarote: " + capacidadeTotalCamarote + "\n";
     }
 
 
-    // Metodo equals
+    // -- Metodo Equals --
     // O metodo equals vai servir para comparar se dois objetos são "a mesma coisa".
     @Override
     public boolean equals(Object obj) {
+
         // Verificação de Memória: Se "este" (this) objeto for exatamente o mesmo endereço de memória que o recebido (obj)
         if (this == obj) return true;
 
         //  Verificação de Nulo e Tipo:
         // Se o objeto comparado for nulo OU se eles forem de classes diferentes (ex: comparar Evento com Cliente)
-        // Então retorna falso na hora
+        // então retorna falso na hora
         if (obj == null || getClass() != obj.getClass()) return false;
 
-        // Casting (Conversão):
-        // Como o parâmetro vem como genérico 'Object', precisamos avisar o Java: "Trate esse obj como Eventos"
+        // Casting :
+        // Como o parâmetro vem como genérico 'Object', precisamos avisar o Java dizendo: "trate esse obj como Eventos"
         // para podermos acessar o atributo '.id' dele.
         Eventos outro = (Eventos) obj;
 
         //  Comparação Real:
         // Definimos que dois eventos são iguais se o ID deles for igual.
-        // Ex: Se eu criar dois objetos na memória diferentes, mas ambos tiverem ID 5, para o sistema eles são o mesmo evento.
         return this.id == outro.id;
+
+        // Ex: Se eu criar dois objetos na memória diferentes,
+        // mas ambos tiverem ID 5, para o sistema eles são o mesmo evento.
     }
 }
